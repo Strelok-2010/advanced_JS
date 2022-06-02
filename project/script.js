@@ -1,24 +1,29 @@
 // "use strict";
 
+const goods = [
+	{ title: 'Shirt', price: 150 },
+	{ title: 'Socks', price: 50 },
+	{ title: 'Jacket', price: 350 },
+	{ title: 'Shoes', price: 250 },
+];
+
+
 const BASE_URL = "https://raw.githubusercontent.com/GeekBrainsTutorial/online-store-api/master/responses";
 const GOODS = `${BASE_URL}/catalogData.json`
 const CARTS = `${BASE_URL}/getBasket.json`
 
-function service(url, callback) {
-	const xhr = new XMLHttpRequest();
-	xhr.open('GET', url);
-	const loadHandler = () => {
-		callback(JSON.parse(xhr.response));
-	}
-	xhr.onload = loadHandler;
-	xhr.send();
+function service(url) {
+	return fetch(url).then((res) => res.json())
+
 }
+
 
 class GoodsItem {
 	constructor({ product_name = "Продукт не опознан", price = "Уточните цену" }) {
 		this.title = product_name;
 		this.price = price;
 	}
+
 	render() {
 		return `
 		     <div class="goods-item">
@@ -31,15 +36,24 @@ class GoodsItem {
 }
 
 class GoodsList {
-	fetchData(callback) {
-		service(GOODS, (data) => {
+	list = [];
+	filteredItems = [];
+	fetchData() {
+		return service(GOODS).then((data) => {
 			this.list = data;
-			callback();
+			this.filteredItems = data;
+			return data;
 		});
 	}
 
+	filter(str) {
+		this.filteredItems = this.list.filter(({ product_name }) => {
+			return (new RegExp(str, 'i')).test(product_name);
+		})
+	}
+
 	render() {
-		const goodsList = this.list.map(item => {
+		const goodsList = this.filteredItems.map(item => {
 			const goodsItem = new GoodsItem(item);
 			return goodsItem.render()
 
@@ -50,19 +64,10 @@ class GoodsList {
 }
 
 
-
-
-
-
 const goodsList = new GoodsList();
-goodsList.fetchData(() => {
+goodsList.fetchData().then(() => {
 	goodsList.render();
 })
-
-
-
-
-
 
 
 // корзина
@@ -78,10 +83,10 @@ class CartsItem {
 }
 
 class CartsList {
-	cartsData(callback) {
-		service(CARTS, (data) => {             //создание корзины
+	cartsData() {
+		return service(CARTS).then((data) => {             //создание корзины
 			this.list = data;
-			callback();
+			return (data);
 		});
 	}
 
@@ -98,6 +103,9 @@ class CartsList {
 			return goodsItem.render()
 		}).join('');
 		document.querySelector('.carts').innerHTML = cartsMap;
+	}
+
+	summaList() {
 		const summa = cartsList.getCount();
 		const cartsItem = new CartsItem();
 		const summaBlock = cartsItem.render(summa);                          //посчитаная сумма
@@ -109,7 +117,17 @@ class CartsList {
 }
 
 const cartsList = new CartsList();
-cartsList.cartsData(() => {
+cartsList.cartsData().then(() => {
 	cartsList.render();
-
+	cartsList.summaList();
 })
+
+
+document.getElementsByClassName('search-button')[0].addEventListener('click', () => {
+	const input = document.getElementsByClassName('goods-search')[0];
+	debugger
+	goodsList.filter(input.value);
+	goodsList.render(input.value);
+})
+
+
