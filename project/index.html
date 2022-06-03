@@ -7,34 +7,44 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 	<link rel="stylesheet" href="css/style.css">
 	<title>eShop</title>
-
+	<script src="https://cdn.jsdelivr.net/npm/vue@2.6.14"></script>
+	<script src="script.js"></script>
 </head>
 
 <body>
-	<header>
-		<div class="search">
-			<input type="text" class="goods-search">
-			<button class="search-button" type="button">Искать</button>
-		</div>
-		<button class="cart-button" type="button">Корзина</button>
-	</header>
 
-
-
-	<main>
-		<div class="container">
-			<h2>Магазин</h2>
-			<div class="goods-list"></div>
-			<h2>Корзина</h2>
-			<div class="block-carts">
-				<div class="carts">
-				</div>
-				<div class="summa"></div>
-				<div class="amount"></div>
+	<div id="root">
+		<header>
+			<div class="search">
+				<input type="text" class="goods-search" v-model="searchValue" />
 			</div>
-		</div>
-	</main>
-	<script src="script.js"></script>
+			<button class="cart-button" type="button" @click="visiblCart">Корзина</button>
+		</header>
+		<main>
+			<div class="container">
+				<h2>Магазин</h2>
+				<div class="goods-list">
+					<div class="goods-item" v-for="item in filteredItems">
+						<h3>{{ item.product_name }}</h3>
+						<p>{{ item.price }}</p>
+					</div>
+					<div class="block-carts" v-if="isVisibleCart">
+						<h2>Корзина</h2>
+						<div class="carts">
+							<div class="carts-item" v-if="itemsCarts" v-for="item in itemsCarts.contents">
+								<h3>{{ item.product_name }}</h3>
+								<p>{{ item.price }}</p>
+							</div>
+							<div class="plug" v-else="itemsCarts">
+								<h2>Корзина пуста</h2>
+							</div>
+						</div>
+						<div class="summa">Итого: {{ calculatePrice }}</div>
+						<button class="close" type="button" @click="visiblCart">Close</button>
+					</div>
+				</div>
+		</main>
+	</div>
 </body>
 
 </html>
