@@ -16,33 +16,30 @@
 	<div id="root">
 		<header>
 			<div class="search">
-				<input type="text" class="goods-search" v-model="searchValue" />
+				<custom_input v-model="searchValue"></custom_input>
 			</div>
-			<button class="cart-button" type="button" @click="visiblCart">Корзина</button>
+			<custom_button @click="visiblCart">Корзина</custom_button>
 		</header>
 		<main>
 			<div class="container">
 				<h2>Магазин</h2>
 				<div class="goods-list">
-					<div class="goods-item" v-for="item in filteredItems">
-						<h3>{{ item.product_name }}</h3>
-						<p>{{ item.price }}</p>
-					</div>
+					<good v-for="item in filteredItems" :item="item"></good>
 					<div class="block-carts" v-if="isVisibleCart">
+						<custom_button @click="visiblCart">Close</custom_button>
 						<h2>Корзина</h2>
 						<div class="carts">
-							<div class="carts-item" v-if="itemsCarts" v-for="item in itemsCarts.contents">
-								<h3>{{ item.product_name }}</h3>
-								<p>{{ item.price }}</p>
-							</div>
+							<good v-if="itemsCarts" v-for="item in itemsCarts.contents" :item="item"></good>
 							<div class="plug" v-else="itemsCarts">
 								<h2>Корзина пуста</h2>
 							</div>
 						</div>
 						<div class="summa">Итого: {{ calculatePrice }}</div>
-						<button class="close" type="button" @click="visiblCart">Close</button>
 					</div>
 				</div>
+				<custom_button @click="timeVisiblBug">Проверка ошибки</custom_button>
+				<snackbar v-if="snackbar" :error='errorMessage' :snack="snack = visiblBug">
+				</snackbar>
 		</main>
 	</div>
 </body>

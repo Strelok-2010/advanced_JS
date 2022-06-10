@@ -14,13 +14,13 @@ header {
 }
 
 .goods-search {
-	margin: 30px 20px;
+	margin: 5px 20px;
 	padding: 5px 10px;
 	font-size: 30px;
 }
 
 .cart-button {
-	margin: 20px 20px;
+	margin: 2px 20px;
 	padding: 10px 50px;
 	font-size: 20px;
 	font-weight: bold;
@@ -38,6 +38,7 @@ header {
 	display: flex;
 	justify-content: space-around;
 	flex-wrap: wrap;
+	margin-bottom: 50px;
 }
 
 .goods-item,
@@ -49,9 +50,9 @@ header {
 	background: rgb(223, 230, 244);
 	max-width: 300px;
 	min-width: 214px;
-	min-height: 280px;
-	margin: 20px;
-	padding: 20px;
+	min-height: 260px;
+	margin: 10px;
+	padding: 10px;
 	box-sizing: border-box;
 	border-radius: 20px;
 }
@@ -61,8 +62,10 @@ header {
 }
 
 .block-carts {
+	padding-top: 10px;
 	display: flex;
 	justify-content: space-around;
+	align-items: baseline;
 	flex-wrap: wrap;
 	position: fixed;
 	top: 0;
@@ -70,7 +73,6 @@ header {
 	width: 250px;
 	height: 100vh;
 	background: rgb(179, 174, 174);
-	padding-top: 60px;
 	overflow: scroll;
 	box-sizing: border-box;
 }
@@ -83,21 +85,20 @@ header {
 	flex-wrap: wrap;
 }
 
-.close {
-	text-align: center;
-	line-height: 40px;
-	font-size: 30px;
-	padding: 0px 10px;
-	height: 40px;
-	border-radius: 20px;
-	background: #111;
-	color: #fff;
-	position: fixed;
-	top: 20px;
-	right: 80px;
-	cursor: pointer;
-}
-
 .carts-item {
 	width: 100%;
+}
+
+.bug {
+	padding: 5px 30px;
+	display: flex;
+	background: rgb(241, 85, 38);
+	border-radius: 5px;
+	margin-top: 50px;
+	font-size: 24px;
+	line-height: 40px;
+}
+.error {
+	padding: 5px 30px;
+	color: azure;
 }
