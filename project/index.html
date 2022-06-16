@@ -26,15 +26,17 @@
 				<div class="goods-list">
 					<good v-for="item in filteredItems" :item="item"></good>
 					<div class="block-carts" v-if="isVisibleCart">
-						<custom_button @click="visiblCart">Close</custom_button>
-						<h2>Корзина</h2>
+						<box-carts :visib="visiblCart" :itemsCarts="itemsCarts" :calculatePrice="calculatePrice">{{ calculatePrice
+							}}</box-carts>
+						<!-- <custom_button @click="visiblCart">Close</custom_button>
 						<div class="carts">
-							<good v-if="itemsCarts" v-for="item in itemsCarts.contents" :item="item"></good>
+							<h2>Корзина</h2>
+							<carts v-if="itemsCarts" v-for="item in itemsCarts.contents" :item="item"></carts>
 							<div class="plug" v-else="itemsCarts">
 								<h2>Корзина пуста</h2>
 							</div>
 						</div>
-						<div class="summa">Итого: {{ calculatePrice }}</div>
+						<div class="summa">Итого: {{ calculatePrice }}</div> -->
 					</div>
 				</div>
 				<custom_button @click="timeVisiblBug">Проверка ошибки</custom_button>

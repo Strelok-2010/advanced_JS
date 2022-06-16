@@ -1,12 +1,26 @@
 
 
 
-const BASE_URL = "https://raw.githubusercontent.com/GeekBrainsTutorial/online-store-api/master/responses";
-const GOODS = `${BASE_URL}/catalogData.json`
-const CARTS = `${BASE_URL}/getBasket.json`
+const BASE_URL = "http://localhost:8000/";
+const GOODS_NO_JSON = `${BASE_URL}goods`
+const GOODS = `${BASE_URL}goods.json`
+const CARTS = `${BASE_URL}basket_goods.json`
+const BASKET = `${BASE_URL}basket`
 
 function service(url) {
 	return fetch(url).then((res) => res.json())
+}
+function serviceWithBody(url = "", method = "POST", body = {}) {
+	return fetch(
+		url,
+		{
+			method,
+			headers: {
+				'Content-type': 'application/json; charset=UTF-8',
+			},
+			body: JSON.stringify(body)
+		}
+	).then((res) => res.json())
 }
 let app = null
 
@@ -43,8 +57,73 @@ window.onload = () => {
 			<div class="goods-item">
 				<h3>{{ item.product_name }}</h3>
 				<p>{{ item.price }}</p>
+				<div class="button-item">
+					<custom_button @click="addGood">Добавить</custom_button>
+				</div>
+			</div>
+			`,
+		methods: {
+			addGood() {
+				serviceWithBody(BASKET, "POST", {
+					id: this.item.id
+				})
+			}
+		}
+	})
+	Vue.component('carts', {
+		props: [
+			'item'
+		],
+		template: `
+			<div class="carts-item">
+				<h3>{{ item.product_name }}</h3>
+				<p>{{ item.price }}</p>
+				<div class="count">
+				<custom_button @click="$emit('add',item.id)">+</custom_button>
+					<p>{{ item.count }} шт</p>
+					<custom_button>-</custom_button>
+				</div>
 			</div>
 			`
+	})
+	Vue.component('box-carts', {
+		data() {
+			return {
+				basketGoodsItems: []
+			}
+		},
+		props: [
+			'visib',
+			'itemsCarts',
+			'calculatePrice'
+		],
+		template: `
+			<div class="carts-block">
+				<custom_button @click="visib">Close</custom_button>
+				<div class="carts">
+					<h2>Корзина</h2>
+					<carts v-if="basketGoodsItems" v-for="item in basketGoodsItems" :item="item" @add="addGood"></carts>
+					<div class="plug" v-else="basketGoodsItems">
+						<h2>Корзина пуста</h2>
+					</div>
+				</div>
+				<div class="summa">Итого: <slot></slot> </div>
+			</div>
+		`,
+		methods: {
+			addGood(id) {
+				serviceWithBody(BASKET, "POST", {
+					id
+				}).then((data) => {
+					this.basketGoodsItems = data;
+				})
+			}
+		},
+		mounted() {
+			service(BASKET).then((data) => {
+				this.basketGoodsItems = data
+			})
+		}
 	})
 	Vue.component('snackbar', {
 		props: [
@@ -69,7 +148,8 @@ window.onload = () => {
 			searchValue: '',
 			isVisibleCart: false,
 			snackbar: false,
-			errorMessage: ''
+			errorMessage: '',
+			basketGoodsItems: []
 		},
 		methods: {
 			fetchGoods() {
@@ -77,11 +157,11 @@ window.onload = () => {
 					this.items = data;
 				});
 			},
-			fetchCarts() {
-				service(CARTS).then((data) => {
-					this.itemsCarts = data;
-				});
-			},
+			// fetchCarts() {
+			// 	service(CARTS).then((data) => {
+			// 		this.itemsCarts = data;
+			// 	});
+			// },
 			visiblCart() {
 				if (this.isVisibleCart == true) {
 					this.isVisibleCart = false;
@@ -114,7 +194,7 @@ window.onload = () => {
 		},
 		mounted() {
 			this.fetchGoods();
-			this.fetchCarts()
+			// this.fetchCarts()
 		},
 
 		created() {
