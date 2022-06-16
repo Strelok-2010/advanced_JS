@@ -19,14 +19,34 @@ header {
 	font-size: 30px;
 }
 
+.button-item {
+	position: absolute;
+	bottom: 14px;
+}
+
 .cart-button {
 	margin: 2px 20px;
-	padding: 10px 50px;
+	padding: 10px 20px;
 	font-size: 20px;
 	font-weight: bold;
-	background: rgb(98, 138, 187);
+	background: rgb(31, 43, 58);
 	color: rgb(235, 249, 249);
-	border-radius: 10px;
+	border-radius: 4px;
+}
+
+.count {
+	display: flex;
+	width: 100%;
+}
+
+.cart-button:hover {
+	background: rgb(56, 72, 91);
+	color: rgb(235, 249, 249);
+}
+
+.cart-button:active {
+	background: rgb(192, 116, 54);
+	color: rgb(235, 249, 249);
 }
 
 .goods-list {
@@ -39,22 +59,38 @@ header {
 	justify-content: space-around;
 	flex-wrap: wrap;
 	margin-bottom: 50px;
+	flex-wrap: wrap;
 }
 
-.goods-item,
-.carts-item {
+.goods-item {
+	position: relative;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
 	border: 3px solid rgb(98, 138, 187);
-	background: rgb(223, 230, 244);
+	background: rgb(255, 255, 255);
 	max-width: 300px;
 	min-width: 214px;
 	min-height: 260px;
 	margin: 10px;
 	padding: 10px;
 	box-sizing: border-box;
+	border-radius: 6px;
+}
+
+.carts-item {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	border: 3px solid rgb(98, 138, 187);
+	background: rgb(223, 230, 244);
+	max-width: 300px;
+	min-width: 214px;
+	margin: 10px;
+	padding: 5px 20px;
+	box-sizing: border-box;
 	border-radius: 20px;
+	flex-wrap: wrap;
 }
 
 .img-tovar {
@@ -64,29 +100,32 @@ header {
 .block-carts {
 	padding-top: 10px;
 	display: flex;
-	justify-content: space-around;
-	align-items: baseline;
+	flex-direction: column;
+	justify-content: start;
+	align-items: center;
 	flex-wrap: wrap;
 	position: fixed;
 	top: 0;
 	right: 0;
-	width: 250px;
+	width: 310px;
 	height: 100vh;
 	background: rgb(179, 174, 174);
 	overflow: scroll;
 	box-sizing: border-box;
 }
 
+.carts-block {
+	display: flex;
+	flex-direction: column;
+	height: 100vh;
+	align-items: center;
+}
+
 .carts {
 	width: 100%;
-	padding: 10px;
 	display: flex;
 	justify-content: space-around;
 	flex-wrap: wrap;
-}
-
-.carts-item {
-	width: 100%;
 }
 
 .bug {
